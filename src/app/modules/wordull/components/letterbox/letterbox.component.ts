@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { GameService } from '../../services/game.service';
 
 @Component({
   selector: 'app-letterbox',
@@ -6,8 +7,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./letterbox.component.scss']
 })
 export class LetterboxComponent implements OnInit {
-
-  constructor() { }
+  @Input() value = '';
+  constructor(public game: GameService) {
+  }
 
   ngOnInit(): void {
   }

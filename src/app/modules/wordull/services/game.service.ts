@@ -4,23 +4,39 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class GameService {
-  isogram:boolean=true;
-  multiletterHint:boolean=false;
-  guess:string="";
-  targetWord:string="grub";
-  numberOfGuesses=6;
-  numberOfLetters=4;
-  guesses:string[]=[""];
-  currentGuess=0;
+  //Game Parameters
+  NumberOfLetters = 4;
+  NumberOfGuesses = 6;
+
+  isogram: boolean = true;
+  multiletterHint: boolean = false;
+  guess: string = "";
+  targetWord: string = "grub";
+  guesses: string[] = [""];
+  currentGuess = 0;
 
 
-  constructor() { }
+  constructor() {
+    this.startThreeLetterGame();
+  }
 
-  addLetter(letter:string) {
-    if(this.guesses[this.currentGuess].length < this.numberOfLetters){
-      this.guesses[this.currentGuess]+=letter;
+  startThreeLetterGame() {
+    this.NumberOfLetters = 3;
+    this.NumberOfGuesses = 6;
+    this.initGuessesWithNumberOfBlanks(this.NumberOfGuesses);
+  }
+
+  startFourLetterGame() {
+    this.NumberOfLetters = 4;
+    this.NumberOfGuesses = 6;
+    this.initGuessesWithNumberOfBlanks(this.NumberOfGuesses);
+  }
+
+  addLetter(letter: string) {
+    if (this.guesses[this.currentGuess].length < this.NumberOfLetters) {
+      this.guesses[this.currentGuess] += letter;
       console.log(this.guesses[this.currentGuess]);
-    }else{
+    } else {
       console.log("too many letters");
     }
   }
@@ -30,50 +46,56 @@ export class GameService {
     console.log(this.guesses[this.currentGuess]);
   }
 
-  checkGuess(){
+  checkGuess() {
     let guessword = this.guesses[this.currentGuess];
-    if(guessword.length != this.numberOfLetters){
+    if (guessword.length != this.NumberOfLetters) {
       console.log("Not enough letters");
       return;
     }
-    for(let i=0; i<this.numberOfLetters; i++){
+    for (let i = 0; i < this.NumberOfLetters; i++) {
       let letter = guessword[i];
       let letterPosition = this.targetWord.indexOf(letter);
 
-      if(letterPosition == -1){
+      if (letterPosition == -1) {
         //letter not found
         console.log(letter + " not found");
-      }else if(letterPosition == i){
+      } else if (letterPosition == i) {
         //letter found and in correct position
-        if(this.isogram && this.multiletterHint && this.hasMultipleOfLetter(this.targetWord,letter)){
+        if (this.isogram && this.multiletterHint && this.hasMultipleOfLetter(this.targetWord, letter)) {
           console.log(letter + " is in the correct position and found multiple times");
-        }else {
+        } else {
           console.log(letter + " is in the correct position");
         }
-      }else{
+      } else {
         //letter found but not in correct position
-        if(this.isogram && this.multiletterHint)
-        {
-          if(this.hasMultipleOfLetter(this.targetWord,letter)){
+        if (this.isogram && this.multiletterHint) {
+          if (this.hasMultipleOfLetter(this.targetWord, letter)) {
             // multiple of this letter
             console.log(letter + " found multiple times");
           }
-        }else{
+        } else {
           // single of this letter
           console.log(letter + " found but incorrect position");
         }
       }
     }
-    this.currentGuess+=1;
+    this.currentGuess += 1;
     this.guesses.push("");
   }
 
-  private getCurrentGuessWord(): string{
+  private getCurrentGuessWord(): string {
     return this.guesses[this.currentGuess];
   }
 
-  private hasMultipleOfLetter(word:string, letter:string):boolean{
-    let match = word.match(new RegExp(letter,'gi'));
-    return (match && match.length>1) || false;
+  private hasMultipleOfLetter(word: string, letter: string): boolean {
+    let match = word.match(new RegExp(letter, 'gi'));
+    return (match && match.length > 1) || false;
+  }
+
+  private initGuessesWithNumberOfBlanks(num: Number) {
+    this.guesses = [];
+    for (let i = 0; i < num; i++) {
+      this.guesses.push("");
+    }
   }
 }
