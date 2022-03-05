@@ -13,6 +13,9 @@ export class GuessgridComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.game.action.subscribe(()=>{
+      
+    });
   }
 
 }

@@ -23,6 +23,7 @@ export class KeyboardComponent implements OnInit {
 
   enterPressed(){
     console.log("enter");
+    this.game.checkGuess();
   }
 
 }

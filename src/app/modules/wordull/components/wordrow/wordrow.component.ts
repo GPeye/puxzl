@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { GameService } from '../../services/game.service';
 
 @Component({
@@ -7,6 +7,7 @@ import { GameService } from '../../services/game.service';
   styleUrls: ['./wordrow.component.scss']
 })
 export class WordrowComponent implements OnInit {
+  @Input() word = "";
   letters: Array<string> = [];
 
   constructor(private game: GameService) {

@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,9 @@ export class GameService {
   targetWord: string = "grub";
   guesses: string[] = [""];
   currentGuess = 0;
+
+  _actionEmitter = new BehaviorSubject("");
+  action = this._actionEmitter.asObservable();
 
 
   constructor() {
@@ -36,6 +40,7 @@ export class GameService {
     if (this.guesses[this.currentGuess].length < this.NumberOfLetters) {
       this.guesses[this.currentGuess] += letter;
       console.log(this.guesses[this.currentGuess]);
+      this._actionEmitter.next("d");
     } else {
       console.log("too many letters");
     }
@@ -94,8 +99,9 @@ export class GameService {
 
   private initGuessesWithNumberOfBlanks(num: Number) {
     this.guesses = [];
+    let value = Array.of(" ".repeat(this.NumberOfLetters)).join();
     for (let i = 0; i < num; i++) {
-      this.guesses.push("");
+      this.guesses.push(value);
     }
   }
 }
