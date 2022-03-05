@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { GameService } from '../../services/game.service';
 
 @Component({
   selector: 'app-keyboard',
@@ -7,9 +8,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class KeyboardComponent implements OnInit {
 
-  constructor() { }
+  constructor(private game:GameService) { }
 
   ngOnInit(): void {
+  }
+
+  keyPressed(key:string){
+    this.game.addLetter(key);
+  }
+  
+  delPressed(){
+    this.game.deleteLetter();
+  }
+
+  enterPressed(){
+    console.log("enter");
   }
 
 }
