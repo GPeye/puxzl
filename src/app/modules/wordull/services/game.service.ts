@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, of } from 'rxjs';
 import { LetterStatus } from '../models/letter';
 import { Word } from '../models/word';
+import * as confetti from 'canvas-confetti';
 
 @Injectable({
   providedIn: 'root'
@@ -14,8 +15,7 @@ export class GameService {
   isogram: boolean = true;
   multiletterHint: boolean = false;
 
-  //ActivGame Properties
-  guess: string = "";
+  //ActivsGame Properties
   targetWord: string = "gab";
   guesses: Word[] = [];
   currentGuess = 0;
@@ -30,6 +30,7 @@ export class GameService {
 
 
   constructor(private http: HttpClient) {
+    this.privateConfetti();
     this.startThreeLetterGame();
     this.getWord(3, true);
   }
@@ -116,5 +117,28 @@ export class GameService {
     for (let i = 0; i < this.NumberOfGuesses; i++) {
       this.guesses.push(new Word());
     }
+  }
+
+  privateConfetti() {
+    let myCanvas = document.createElement('canvas');
+    myCanvas.classList.add('confetti');
+    myCanvas.id = "confetti";
+    document.body.appendChild(myCanvas);
+    var myConfetti = confetti.create(myCanvas, {
+      resize: true,
+      useWorker: true
+    });
+    myConfetti({
+      particleCount: 200,
+      angle: 60,
+      spread: 55,
+      origin: { x: 0 }
+    });
+    myConfetti({
+      particleCount: 200,
+      angle: 120,
+      spread: 55,
+      origin: { x: 1 },
+    });
   }
 }
