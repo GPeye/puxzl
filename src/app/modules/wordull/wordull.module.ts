@@ -7,7 +7,7 @@ import { LetterboxComponent } from './components/letterbox/letterbox.component';
 import { WordrowComponent } from './components/wordrow/wordrow.component';
 import { KeyboardComponent } from './components/keyboard/keyboard.component';
 import { GuessgridComponent } from './components/guessgrid/guessgrid.component';
-
+import { MatButtonModule} from '@angular/material/button';
 
 @NgModule({
   declarations: [
@@ -15,11 +15,13 @@ import { GuessgridComponent } from './components/guessgrid/guessgrid.component';
     LetterboxComponent,
     WordrowComponent,
     KeyboardComponent,
-    GuessgridComponent
+    GuessgridComponent,
   ],
   imports: [
     CommonModule,
-    WordullRoutingModule
+    WordullRoutingModule,
+    MatButtonModule
+    
   ]
 })
 export class WordullModule { }
