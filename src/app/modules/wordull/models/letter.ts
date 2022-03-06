@@ -1,13 +1,16 @@
 export class Letter {
-    status:Status=Status.Blank;
-    value:string="";
+    status: LetterStatus = LetterStatus.Blank;
+    hasDuplicate: boolean = false;
+    value: string = "";
+
+    constructor(val: string) {
+        this.value = val;
+    }
 }
 
-export enum Status{
+export enum LetterStatus {
     Blank,
     NotFound,
     WrongPosition,
-    WrongPositionMulti,
     CorrectPosition,
-    CorrectPositionMulti
 }

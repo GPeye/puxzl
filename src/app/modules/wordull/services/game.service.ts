@@ -1,5 +1,8 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, of } from 'rxjs';
+import { LetterStatus } from '../models/letter';
+import { Word } from '../models/word';
 
 @Injectable({
   providedIn: 'root'
@@ -8,37 +11,54 @@ export class GameService {
   //Game Parameters
   NumberOfLetters = 4;
   NumberOfGuesses = 6;
-
   isogram: boolean = true;
   multiletterHint: boolean = false;
+
+  //ActivGame Properties
   guess: string = "";
-  targetWord: string = "grub";
-  guesses: string[] = [""];
+  targetWord: string = "gab";
+  guesses: Word[] = [];
   currentGuess = 0;
+
+  perfectLetters: string[] = [];
+  incorrectLetters: string[] = [];
+  correctLetters: string[] = [];
+  duplicateLetters: string[] = [];
 
   _actionEmitter = new BehaviorSubject("");
   action = this._actionEmitter.asObservable();
 
 
-  constructor() {
+  constructor(private http: HttpClient) {
     this.startThreeLetterGame();
+    this.getWord(3, true);
+  }
+
+  getWord(length: number, isogram: boolean = true) {
+    this.http.get('assets/words/threeIsograms.json')
+      .subscribe((file) => {
+        let words: string[] = file as string[];
+        let randomIndex = Math.floor(Math.random() * (words.length - 1) - 1);
+        console.log(words[randomIndex]);
+        this.targetWord = words[randomIndex];
+      });
   }
 
   startThreeLetterGame() {
     this.NumberOfLetters = 3;
     this.NumberOfGuesses = 6;
-    this.initGuessesWithNumberOfBlanks(this.NumberOfGuesses);
+    this.initGuesses();
   }
 
   startFourLetterGame() {
     this.NumberOfLetters = 4;
     this.NumberOfGuesses = 6;
-    this.initGuessesWithNumberOfBlanks(this.NumberOfGuesses);
+    this.initGuesses();
   }
 
   addLetter(letter: string) {
-    if (this.guesses[this.currentGuess].length < this.NumberOfLetters) {
-      this.guesses[this.currentGuess] += letter;
+    if (this.guesses[this.currentGuess].length() < this.NumberOfLetters) {
+      this.guesses[this.currentGuess].addLetter(letter);
       console.log(this.guesses[this.currentGuess]);
       this._actionEmitter.next("d");
     } else {
@@ -47,49 +67,43 @@ export class GameService {
   }
 
   deleteLetter() {
-    this.guesses[this.currentGuess] = this.guesses[this.currentGuess].slice(0, -1);
+    this.guesses[this.currentGuess].deleteLetter();
     console.log(this.guesses[this.currentGuess]);
   }
 
   checkGuess() {
-    let guessword = this.guesses[this.currentGuess];
+    let guessword = this.guesses[this.currentGuess].getWord();
     if (guessword.length != this.NumberOfLetters) {
       console.log("Not enough letters");
       return;
     }
     for (let i = 0; i < this.NumberOfLetters; i++) {
-      let letter = guessword[i];
-      let letterPosition = this.targetWord.indexOf(letter);
+      let letter = this.guesses[this.currentGuess].letters[i];
+      let letterPosition = this.targetWord.indexOf(letter.value);
+
+      if (this.isogram && this.multiletterHint && this.hasMultipleOfLetter(this.targetWord, letter.value)) {
+        this.duplicateLetters.push(letter.value);
+        letter.hasDuplicate = true
+      }
 
       if (letterPosition == -1) {
-        //letter not found
-        console.log(letter + " not found");
+        this.incorrectLetters.push(letter.value);
+        letter.status = LetterStatus.NotFound;
       } else if (letterPosition == i) {
-        //letter found and in correct position
-        if (this.isogram && this.multiletterHint && this.hasMultipleOfLetter(this.targetWord, letter)) {
-          console.log(letter + " is in the correct position and found multiple times");
-        } else {
-          console.log(letter + " is in the correct position");
-        }
+        this.perfectLetters.push(letter.value);
+        letter.status = LetterStatus.CorrectPosition;
       } else {
-        //letter found but not in correct position
-        if (this.isogram && this.multiletterHint) {
-          if (this.hasMultipleOfLetter(this.targetWord, letter)) {
-            // multiple of this letter
-            console.log(letter + " found multiple times");
-          }
-        } else {
-          // single of this letter
-          console.log(letter + " found but incorrect position");
-        }
+        this.correctLetters.push(letter.value);
+        letter.status = LetterStatus.WrongPosition;
       }
     }
     this.currentGuess += 1;
-    this.guesses.push("");
+
+    this._actionEmitter.next("");
   }
 
   private getCurrentGuessWord(): string {
-    return this.guesses[this.currentGuess];
+    return this.guesses[this.currentGuess].getWord();
   }
 
   private hasMultipleOfLetter(word: string, letter: string): boolean {
@@ -97,11 +111,10 @@ export class GameService {
     return (match && match.length > 1) || false;
   }
 
-  private initGuessesWithNumberOfBlanks(num: Number) {
+  private initGuesses() {
     this.guesses = [];
-    let value = Array.of(" ".repeat(this.NumberOfLetters)).join();
-    for (let i = 0; i < num; i++) {
-      this.guesses.push(value);
+    for (let i = 0; i < this.NumberOfGuesses; i++) {
+      this.guesses.push(new Word());
     }
   }
 }

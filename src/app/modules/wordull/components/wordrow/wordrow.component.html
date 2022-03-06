@@ -1,3 +1,6 @@
 <div class="letter-row">
-    <app-letterbox *ngFor="let letter of word.split('')" [value]="letter"></app-letterbox>
+    <app-letterbox *ngFor="let letter of word.letters" [value]="letter.value" [status]="letter.status">
+    </app-letterbox>
+    <app-letterbox *ngFor="let letter of padWord().letters" [value]="letter.value" [status]="letter.status">
+    </app-letterbox>
 </div>

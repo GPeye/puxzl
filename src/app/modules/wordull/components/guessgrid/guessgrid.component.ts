@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Word } from '../../models/word';
 import { GameService } from '../../services/game.service';
 
 @Component({
@@ -13,9 +14,18 @@ export class GuessgridComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.game.action.subscribe(()=>{
-      
+    this.game.action.subscribe(() => {
+
     });
+  }
+
+  padWord(word: Word): string {
+    let w = word.getWord();
+    if (w.length < this.game.NumberOfLetters) {
+      let padding = this.game.NumberOfLetters - w.length;
+      return w + Array.of(" ".repeat(padding)).join();
+    }
+    return w;
   }
 
 }
