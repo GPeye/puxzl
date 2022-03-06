@@ -10,13 +10,9 @@ import { GameService } from '../../services/game.service';
 export class GuessgridComponent implements OnInit {
 
   constructor(public game: GameService) {
-    console.log(game.guesses.length)
   }
 
   ngOnInit(): void {
-    this.game.action.subscribe(() => {
-
-    });
   }
 
   padWord(word: Word): string {
