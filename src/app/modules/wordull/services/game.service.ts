@@ -28,6 +28,9 @@ export class GameService {
   _actionEmitter = new BehaviorSubject("");
   action = this._actionEmitter.asObservable();
 
+  _keyboardColorEmitter = new BehaviorSubject({});
+  keyboardColor = this._keyboardColorEmitter.asObservable();
+
 
   constructor(private http: HttpClient) {
     this.startThreeLetterGame();
@@ -89,12 +92,15 @@ export class GameService {
       if (letterPosition == -1) {
         this.incorrectLetters.push(letter.value);
         letter.status = LetterStatus.NotFound;
+        this._keyboardColorEmitter.next({letter:letter.value, status: LetterStatus.NotFound});
       } else if (letterPosition == i) {
         this.perfectLetters.push(letter.value);
         letter.status = LetterStatus.CorrectPosition;
+        this._keyboardColorEmitter.next({letter:letter.value, status: LetterStatus.CorrectPosition});
       } else {
         this.correctLetters.push(letter.value);
         letter.status = LetterStatus.WrongPosition;
+        this._keyboardColorEmitter.next({letter:letter.value, status: LetterStatus.WrongPosition});
       }
     }
     this.currentGuess += 1;
