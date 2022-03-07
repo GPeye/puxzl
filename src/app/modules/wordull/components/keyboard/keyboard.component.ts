@@ -14,6 +14,8 @@ export class KeyboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.game.keyboardColor.subscribe( (key:any) => {
+      if(key == "reset")
+        this.resetKeyboard();
       let el = document.getElementById(key.letter);
       if(el){
         if(key.status ==LetterStatus.NotFound){
@@ -24,9 +26,13 @@ export class KeyboardComponent implements OnInit {
           el.style.backgroundColor = "#31cc62";
         }
       }
-        
-      
-      
+    });
+  }
+
+  resetKeyboard(){
+    let keybuttons = document.querySelectorAll('.keyboard-button');
+    keybuttons.forEach(box => {
+      (box as HTMLElement).style.backgroundColor = 'white';
     });
   }
 
