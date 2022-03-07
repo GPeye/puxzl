@@ -10,35 +10,35 @@ import { GameService } from '../../services/game.service';
 })
 export class KeyboardComponent implements OnInit {
 
-  constructor(@Inject(DOCUMENT) document:Document, private game:GameService) { }
+  constructor(@Inject(DOCUMENT) document: Document, private game: GameService) { }
 
   ngOnInit(): void {
-    this.game.keyboardColor.subscribe( (key:any) => {
+    this.game.keyboardColor.subscribe((key: any) => {
       let el = document.getElementById(key.letter);
-      if(el){
-        if(key.status ==LetterStatus.NotFound){
-          el.style.backgroundColor = "#adadac";
-        }else if(key.status == LetterStatus.WrongPosition){
-          el.style.backgroundColor = "#eb9a3d";
-        }else if(key.status == LetterStatus.CorrectPosition){
-          el.style.backgroundColor = "#31cc62";
+      if (el) {
+        if (key.status == LetterStatus.NotFound) {
+          el.style.backgroundColor = "#538D4E";
+        } else if (key.status == LetterStatus.WrongPosition) {
+          el.style.backgroundColor = "#dbb571";
+        } else if (key.status == LetterStatus.CorrectPosition) {
+          el.style.backgroundColor = "#d1d1d1";
         }
       }
-        
-      
-      
+
+
+
     });
   }
 
-  keyPressed(key:string){
+  keyPressed(key: string) {
     this.game.addLetter(key);
   }
-  
-  delPressed(){
+
+  delPressed() {
     this.game.deleteLetter();
   }
 
-  enterPressed(){
+  enterPressed() {
     console.log("enter");
     this.game.checkGuess();
   }

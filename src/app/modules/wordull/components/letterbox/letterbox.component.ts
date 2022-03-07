@@ -20,13 +20,13 @@ export class LetterboxComponent implements OnInit {
   getColor(status: LetterStatus) {
     switch (this.status) {
       case LetterStatus.CorrectPosition:
-        return this.color = "#31cc62";
+        return this.color = "#538D4E";
         break;
       case LetterStatus.WrongPosition:
-        return this.color = "#eb9a3d";
+        return this.color = "#dbb571";
         break;
       case LetterStatus.NotFound:
-        return this.color = "#adadac";
+        return this.color = "#d1d1d1";
         break;
       default:
         return this.color = "white";
