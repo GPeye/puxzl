@@ -9,9 +9,11 @@ import { KeyboardComponent } from './components/keyboard/keyboard.component';
 import { GuessgridComponent } from './components/guessgrid/guessgrid.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatIconModule } from '@angular/material/icon';
 import { OptionsDialogComponent } from './components/options-dialog/options-dialog.component';
 import { EndDialogComponent } from './components/end-dialog/end-dialog.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   declarations: [
@@ -28,8 +30,9 @@ import { EndDialogComponent } from './components/end-dialog/end-dialog.component
     WordullRoutingModule,
     MatButtonModule,
     MatDialogModule,
-    MatIconModule
-
+    MatIconModule,
+    FlexLayoutModule,
+    MatSnackBarModule,
   ]
 })
 export class WordullModule { }

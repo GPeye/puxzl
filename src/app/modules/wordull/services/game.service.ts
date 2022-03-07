@@ -6,14 +6,15 @@ import { Word } from '../models/word';
 import * as confetti from 'canvas-confetti';
 import { MatDialog } from '@angular/material/dialog';
 import { EndDialogComponent } from '../components/end-dialog/end-dialog.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GameService {
   //Game Parameters
-  NumberOfLetters = 4;
-  NumberOfGuesses = 6;
+  NumberOfLetters = 0;
+  NumberOfGuesses = 0;
   isogram: boolean = true;
   multiletterHint: boolean = false;
 
@@ -30,13 +31,25 @@ export class GameService {
   myCanvas: any;
 
 
-  constructor(private http: HttpClient, public dialog: MatDialog) {
-    this.startThreeLetterGame();
-    this.getWord(3, true);
+  constructor(private http: HttpClient, 
+      public dialog: MatDialog,
+      private snackbar:MatSnackBar) {
+    this.startNewGame(4);
   }
 
   getWord(length: number, isogram: boolean = true) {
-    this.http.get('assets/words/threeIsograms.json')
+    let url="assets/words/";
+    switch (length){
+      case 3:
+        url+="threeIsograms.json";
+        break;
+      case 4:
+        url+="fourIsograms.json";
+        break;
+      default:
+        break;
+    }
+    this.http.get(url)
       .subscribe((file) => {
         let words: string[] = file as string[];
         let randomIndex = Math.floor(Math.random() * (words.length - 1) - 1);
@@ -45,10 +58,27 @@ export class GameService {
       });
   }
 
+  startNewGame(numberOfLetters:number=this.NumberOfLetters){
+    this._keyboardColorEmitter.next("reset");
+    this.currentGuess=0;
+    switch(numberOfLetters){
+      case 3:
+        this.startThreeLetterGame();
+        break;
+      case 4:
+        this.startFourLetterGame();
+        break;
+      default:
+        this.startFourLetterGame();
+        break;
+    }
+  }
+
   startThreeLetterGame() {
     this.NumberOfLetters = 3;
     this.NumberOfGuesses = 6;
     this.initGuesses();
+    this.getWord(3, true);
     this.isPlaying = true;
   }
 
@@ -56,6 +86,7 @@ export class GameService {
     this.NumberOfLetters = 4;
     this.NumberOfGuesses = 6;
     this.initGuesses();
+    this.getWord(4, true);
     this.isPlaying = true;
   }
 
@@ -63,7 +94,6 @@ export class GameService {
     if (this.isPlaying) {
       if (this.guesses[this.currentGuess].length() < this.NumberOfLetters) {
         this.guesses[this.currentGuess].addLetter(letter);
-        console.log(this.guesses[this.currentGuess]);
       } else {
         console.log("too many letters");
       }
@@ -73,7 +103,6 @@ export class GameService {
   deleteLetter() {
     if (this.isPlaying) {
       this.guesses[this.currentGuess].deleteLetter();
-      console.log(this.guesses[this.currentGuess]);
     }
   }
 
@@ -81,7 +110,11 @@ export class GameService {
     if (this.isPlaying) {
       let guessword = this.guesses[this.currentGuess].getWord();
       if (guessword.length != this.NumberOfLetters) {
-        console.log("Not enough letters");
+        this.snackbar.open("Not enough letters","",{
+          verticalPosition: 'top',
+          panelClass: ['my-snackbar'],
+          duration: 3000
+        });
         return;
       }
       for (let i = 0; i < this.NumberOfLetters; i++) {
@@ -108,20 +141,29 @@ export class GameService {
       if (guessword == this.targetWord) {
         this.isPlaying = false;
         this.hasWon = true;
-        this.win();
-        this.privateConfetti();
+        this.end();
+        this.confetti();
       } else if (this.currentGuess == this.NumberOfGuesses) {
         this.isPlaying = false;
-        window.alert("You Lose :(\nThe word was: " + this.targetWord);
-        console.log("you lose");
+        this.end();
       }
     }
   }
 
-  private win() {
-    this.dialog.open(EndDialogComponent, {
+  private end() {
+    const dialog = this.dialog.open(EndDialogComponent, {
       autoFocus: "first-header",
       data: { won: this.hasWon, target: this.targetWord },
+      width: "100vw",
+      height: "100vh",
+      maxWidth: "400px",
+      maxHeight: "300px"
+    });
+
+    dialog.afterClosed().subscribe(v => {
+      if(v == "playagain"){
+        this.startNewGame();
+      }
     });
   }
 
@@ -141,18 +183,30 @@ export class GameService {
     }
   }
 
-  privateConfetti() {
+  private confetti() {
     var myCanvas = document.getElementById("confetti") as HTMLCanvasElement;
     if (typeof (myCanvas) != 'undefined' && myCanvas != null) {
       var myConfetti = confetti.create(myCanvas, { resize: true });
+      myConfetti({
+        particleCount: 200,
+        angle: 60,
+        spread: 55,
+        origin: { x: 0 }
+      });
+      myConfetti({
+        particleCount: 200,
+        angle: 120,
+        spread: 55,
+        origin: { x: 1 },
+      });
     } else {
-      var myCanvas = document.createElement('canvas');
+      myCanvas = document.createElement('canvas');
       myCanvas.classList.add('confetti');
       myCanvas.id = "confetti";
       document.body.appendChild(myCanvas);
       var myConfetti = confetti.create(myCanvas, {
         resize: true,
-        useWorker: true
+        //useWorker: true
       });
       myConfetti({
         particleCount: 200,
