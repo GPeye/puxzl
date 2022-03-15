@@ -1,16 +1,15 @@
-#keyboard-cont {
-    margin: 1rem 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.scaleable-wrapper-keyboard {
+  padding: 0px;
+}
+
+.keyboard-cont {
+    max-width: 600px;
   }
   
-  #keyboard-cont div {
+  .keyrow {
+    width: 100%;
     display: flex;
-  }
-  
-  .second-row {
-    margin: 0.5rem 0;
+    flex-direction: row;
   }
   
   .keyboard-button {
@@ -18,8 +17,16 @@
     font-weight: 700;
     padding: 0.5rem !important;
     min-width: unset!important;
-    margin: 0 2px;
+    margin: 4px;
     cursor: pointer;
     text-transform: uppercase;
+    flex: 1;
   }
-  
+
+  .spacer-half {
+    flex: 0.5;
+  }
+
+  .one-and-half {
+    flex: 1.5;
+  }

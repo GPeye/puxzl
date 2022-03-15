@@ -1,36 +1,41 @@
-<div id="keyboard-cont">
-    <div class="first-row">
-        <button mat-raised-button id="q" class="keyboard-button" (click)="keyPressed('q')">q</button>
-        <button mat-raised-button id="w" class="keyboard-button" (click)="keyPressed('w')">w</button>
-        <button mat-raised-button id="e" class="keyboard-button" (click)="keyPressed('e')">e</button>
-        <button mat-raised-button id="r" class="keyboard-button" (click)="keyPressed('r')">r</button>
-        <button mat-raised-button id="t" class="keyboard-button" (click)="keyPressed('t')">t</button>
-        <button mat-raised-button id="y" class="keyboard-button" (click)="keyPressed('y')">y</button>
-        <button mat-raised-button id="u" class="keyboard-button" (click)="keyPressed('u')">u</button>
-        <button mat-raised-button id="i" class="keyboard-button" (click)="keyPressed('i')">i</button>
-        <button mat-raised-button id="o" class="keyboard-button" (click)="keyPressed('o')">o</button>
-        <button mat-raised-button id="p" class="keyboard-button" (click)="keyPressed('p')">p</button>
-    </div>
-    <div class="second-row">
-        <button mat-raised-button id="a" class="keyboard-button" (click)="keyPressed('a')">a</button>
-        <button mat-raised-button id="s" class="keyboard-button" (click)="keyPressed('s')">s</button>
-        <button mat-raised-button id="d" class="keyboard-button" (click)="keyPressed('d')">d</button>
-        <button mat-raised-button id="f" class="keyboard-button" (click)="keyPressed('f')">f</button>
-        <button mat-raised-button id="g" class="keyboard-button" (click)="keyPressed('g')">g</button>
-        <button mat-raised-button id="h" class="keyboard-button" (click)="keyPressed('h')">h</button>
-        <button mat-raised-button id="j" class="keyboard-button" (click)="keyPressed('j')">j</button>
-        <button mat-raised-button id="k" class="keyboard-button" (click)="keyPressed('k')">k</button>
-        <button mat-raised-button id="l" class="keyboard-button" (click)="keyPressed('l')">l</button>
-    </div>
-    <div class="third-row">
-        <button mat-raised-button class="keyboard-button" (click)="delPressed()">Del</button>
-        <button mat-raised-button id="z" class="keyboard-button" (click)="keyPressed('z')">z</button>
-        <button mat-raised-button id="x" class="keyboard-button" (click)="keyPressed('x')">x</button>
-        <button mat-raised-button id="c" class="keyboard-button" (click)="keyPressed('c')">c</button>
-        <button mat-raised-button id="v" class="keyboard-button" (click)="keyPressed('v')">v</button>
-        <button mat-raised-button id="b" class="keyboard-button" (click)="keyPressed('b')">b</button>
-        <button mat-raised-button id="n" class="keyboard-button" (click)="keyPressed('n')">n</button>
-        <button mat-raised-button id="m" class="keyboard-button" (click)="keyPressed('m')">m</button>
-        <button mat-raised-button class="keyboard-button" (click)="enterPressed()">Enter</button>
+<div class="scaleable-wrapper-keyboard" id="scaleable-wrapper-keyboard" fxFlexFill flexLayout="column"
+    fxLayoutAlign="center center">
+    <div class="keyboard-cont" fxLayout="column" fxLayoutAlign="space-evenly center">
+        <div class="keyrow" fxLayoutAlign="center center">
+            <button mat-raised-button id="q" class="keyboard-button" (click)="keyPressed('q')">q</button>
+            <button mat-raised-button id="w" class="keyboard-button" (click)="keyPressed('w')">w</button>
+            <button mat-raised-button id="e" class="keyboard-button" (click)="keyPressed('e')">e</button>
+            <button mat-raised-button id="r" class="keyboard-button" (click)="keyPressed('r')">r</button>
+            <button mat-raised-button id="t" class="keyboard-button" (click)="keyPressed('t')">t</button>
+            <button mat-raised-button id="y" class="keyboard-button" (click)="keyPressed('y')">y</button>
+            <button mat-raised-button id="u" class="keyboard-button" (click)="keyPressed('u')">u</button>
+            <button mat-raised-button id="i" class="keyboard-button" (click)="keyPressed('i')">i</button>
+            <button mat-raised-button id="o" class="keyboard-button" (click)="keyPressed('o')">o</button>
+            <button mat-raised-button id="p" class="keyboard-button" (click)="keyPressed('p')">p</button>
+        </div>
+        <div class="keyrow">
+            <div class="spacer-half"></div>
+            <button mat-raised-button id="a" class="keyboard-button" (click)="keyPressed('a')">a</button>
+            <button mat-raised-button id="s" class="keyboard-button" (click)="keyPressed('s')">s</button>
+            <button mat-raised-button id="d" class="keyboard-button" (click)="keyPressed('d')">d</button>
+            <button mat-raised-button id="f" class="keyboard-button" (click)="keyPressed('f')">f</button>
+            <button mat-raised-button id="g" class="keyboard-button" (click)="keyPressed('g')">g</button>
+            <button mat-raised-button id="h" class="keyboard-button" (click)="keyPressed('h')">h</button>
+            <button mat-raised-button id="j" class="keyboard-button" (click)="keyPressed('j')">j</button>
+            <button mat-raised-button id="k" class="keyboard-button" (click)="keyPressed('k')">k</button>
+            <button mat-raised-button id="l" class="keyboard-button" (click)="keyPressed('l')">l</button>
+            <div class="spacer-half"></div>
+        </div>
+        <div class="keyrow">
+            <button mat-raised-button class="keyboard-button one-and-half" (click)="delPressed()">Del</button>
+            <button mat-raised-button id="z" class="keyboard-button" (click)="keyPressed('z')">z</button>
+            <button mat-raised-button id="x" class="keyboard-button" (click)="keyPressed('x')">x</button>
+            <button mat-raised-button id="c" class="keyboard-button" (click)="keyPressed('c')">c</button>
+            <button mat-raised-button id="v" class="keyboard-button" (click)="keyPressed('v')">v</button>
+            <button mat-raised-button id="b" class="keyboard-button" (click)="keyPressed('b')">b</button>
+            <button mat-raised-button id="n" class="keyboard-button" (click)="keyPressed('n')">n</button>
+            <button mat-raised-button id="m" class="keyboard-button" (click)="keyPressed('m')">m</button>
+            <button mat-raised-button class="keyboard-button one-and-half" (click)="enterPressed()">Enter</button>
+        </div>
     </div>
 </div>

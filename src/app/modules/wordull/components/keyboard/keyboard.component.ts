@@ -1,5 +1,5 @@
 import { DOCUMENT } from '@angular/common';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, AfterViewInit } from '@angular/core';
 import { LetterStatus } from '../../models/letter';
 import { GameService } from '../../services/game.service';
 
@@ -13,20 +13,38 @@ export class KeyboardComponent implements OnInit {
   constructor(@Inject(DOCUMENT) document: Document, private game: GameService) { }
 
   ngOnInit(): void {
+    window.addEventListener("resize", this.sizeKeyboard.bind(this));
+
     this.game.keyboardColor.subscribe((key: any) => {
       if (key == "reset")
         this.resetKeyboard();
       let el = document.getElementById(key.letter);
       if (el) {
         if (key.status == LetterStatus.NotFound) {
-          el.style.backgroundColor = "#538D4E";
+          el.style.backgroundColor = "#d1d1d1";
         } else if (key.status == LetterStatus.WrongPosition) {
           el.style.backgroundColor = "#dbb571";
         } else if (key.status == LetterStatus.CorrectPosition) {
-          el.style.backgroundColor = "#d1d1d1";
+          el.style.backgroundColor = "#538D4E";
         }
       }
     });
+  }
+
+  ngAfterViewInit(): void {
+    this.sizeKeyboard();
+  }
+
+  sizeKeyboard() {
+    var e2 = document.querySelector("#scaleable-wrapper-keyboard") as HTMLElement;
+    var e = document.querySelector(".keyboard-cont") as HTMLElement;
+    var elheight = e.clientHeight;
+    var elwidth = e.clientWidth;
+
+    var scale, origin = {};
+    scale = Math.min(e2.clientWidth / elwidth, e2.clientHeight / elheight);
+
+    e.style.transform = "scale(" + scale + ")";
   }
 
   resetKeyboard() {

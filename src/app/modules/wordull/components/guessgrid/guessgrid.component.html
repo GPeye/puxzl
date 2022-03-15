@@ -1,3 +1,6 @@
-<div class="game-board">
-    <app-wordrow *ngFor="let word of game.guesses" [word]="word"></app-wordrow>
+<div class="scaleable-wrapper-gameboard" id="scaleable-wrapper-gameboard" fxFlexFill flexLayout="column"
+    fxLayoutAlign="center center">
+    <div class="game-board" id="game-board">
+        <app-wordrow *ngFor="let word of game.guesses" [word]="word"></app-wordrow>
+    </div>
 </div>

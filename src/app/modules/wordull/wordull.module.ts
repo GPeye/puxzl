@@ -14,6 +14,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { OptionsDialogComponent } from './components/options-dialog/options-dialog.component';
 import { EndDialogComponent } from './components/end-dialog/end-dialog.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { HeaderComponent } from './components/header/header.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     GuessgridComponent,
     OptionsDialogComponent,
     EndDialogComponent,
+    HeaderComponent,
   ],
   imports: [
     CommonModule,
